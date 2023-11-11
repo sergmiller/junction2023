@@ -14,7 +14,7 @@ then
     echo "Debug is True, lets makemigrations, migrate and create superuser..."
     python manage.py makemigrations
     python manage.py migrate
-#    echo "from django.contrib.auth import get_user_model; get_user_model().objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell
+    echo "from django.contrib.auth import get_user_model; get_user_model().objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell
 else
     echo "Debug is False, migrate and collectstatic..."
     python manage.py migrate
