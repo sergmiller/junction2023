@@ -1,6 +1,6 @@
 # Django Websocket AI Assistant | Junction2023
 
-# Prototype on Live
+# Prototype Live
 http://11ai.why-nft.com/
 
 # Frontend
