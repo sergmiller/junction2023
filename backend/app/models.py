@@ -10,8 +10,9 @@ class MenuSection(models.Model):
 
 
 class MeasureType(models.IntegerChoices):
-    SMP500 = (1, "SMP500 Stocks, USD")
-    NASDAQ = (2, "NASDAQ Stocks, USD")
+    GOOG = (1, "GOOG, USD")
+    MSFT = (2, "MSFT, USD")
+    AAPL = (3, "AAPL, USD")
 
 
 class TimeseriesData(models.Model):
