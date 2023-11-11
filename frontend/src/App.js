@@ -11,7 +11,8 @@ import Paper from "@material-ui/core/Paper";
 
 import { withStyles } from "@material-ui/core/styles";
 import {LineChart} from "@mui/x-charts";
-import {Box, Grid, ImageList, ImageListItem, ImageListItemBar} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
+import {REACT_APP_BACKEND_ENDPOINT} from "./settings";
 
 const useStyles = (theme) => ({
   submit: {
@@ -39,8 +40,8 @@ class App extends Component {
     measurementAlerts: [], // [{xData: [], yData: [], xLabel, yLabel}]
   };
 
-  clientAi = new W3CWebSocket("ws://0.0.0.0:8000/ws/ai-chat/" + getUserId() + "/");
-  clientMeasurementAlerts = new W3CWebSocket("ws://0.0.0.0:8000/ws/measurement-alerts/" + getUserId() + "/");
+  clientAi = new W3CWebSocket(REACT_APP_BACKEND_ENDPOINT + "ai-chat/" + getUserId() + "/");
+  clientMeasurementAlerts = new W3CWebSocket(REACT_APP_BACKEND_ENDPOINT + "measurement-alerts/" + getUserId() + "/");
 
   onButtonClicked = (e) => {
     this.clientAi.send(
@@ -94,14 +95,19 @@ class App extends Component {
     const { classes } = this.props;
     return (
         <Container component="main" >
-          {this.state.measurementAlerts.length !== 0 ? (
-            <Grid
+          <Grid
                 container
                 alignItems="center"
                 justifyContent="center"
               >
                 <h1>Alerts</h1>
-              <Grid container spacing={2}>
+
+          {this.state.measurementAlerts.length !== 0 ? (
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+              >
                 {this.state.measurementAlerts.map((measurementAlert) => (
                   <Grid item xs={6}>
                     <LineChart
@@ -118,93 +124,93 @@ class App extends Component {
                         },
                       ]}
                       width={500}
-                      height={300}
+                      height={240}
                     />
                   </Grid>
                 ))}
-              </Grid>
-        {this.state.filledForm ? (
-          <div style={{ marginTop: 50, width: 500 }}>
-            <Paper
-              style={{height: 250, maxHeight: 250, overflow: "auto", boxShadow: "none",}}
-            >
-              {this.state.messages.map((message) => (
-                <>
-                  <Card className={classes.root}>
-                    <CardHeader
-                        title={message.name}
-                        subheader={message.msg}
-                        titleTypographyProps={{variant:'p' }}
-                    />
-                  </Card>
-                </>
-              ))}
-            </Paper>
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={this.onButtonClicked}
-            >
-              <TextField id="outlined-helperText" label="Write text"
-                variant="outlined"
-                value={this.state.value}
-                fullWidth
-                onChange={(e) => {
-                  this.setState({ value: e.target.value });
-                  this.value = this.state.value;
-                }}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Send Message
-              </Button>
-            </form>
-          </div>
-        ) : (
-          <div>
-            <CssBaseline />
-            <div className={classes.paper}>
-              <form
-                className={classes.form}
-                noValidate
-                onSubmit={(value) => this.setState({ filledForm: true })}
-              >
-                <TextField variant="outlined" margin="normal" required fullWidth label="Room name"
-                  name="Room name"
-                  autoFocus
-                  value={this.state.room}
-                  onChange={(e) => {
-                    this.setState({ room: e.target.value });
-                    this.value = this.state.room;
-                  }}
-                />
-                <TextField variant="outlined" margin="normal" required fullWidth name="sender" label="sender"
-                  type="sender"
-                  id="sender"
-                  value={this.state.name}
-                  onChange={(e) => {
-                    this.setState({ name: e.target.value });
-                    this.value = this.state.name;
-                  }}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Submit
-                </Button>
-              </form>
-            </div>
-          </div>
-        )}
+
+                {this.state.filledForm ? (
+                  <div style={{ marginTop: 50, width: 700 }}>
+                    <Paper
+                      style={{height: 240, maxHeight: 240, overflow: "auto", boxShadow: "none",}}
+                    >
+                      {this.state.messages.map((message) => (
+                        <>
+                          <Card className={classes.root}>
+                            <CardHeader
+                                title={message.name}
+                                subheader={message.msg}
+                                titleTypographyProps={{variant:'p' }}
+                            />
+                          </Card>
+                        </>
+                      ))}
+                    </Paper>
+                    <form
+                      className={classes.form}
+                      noValidate
+                      onSubmit={this.onButtonClicked}
+                    >
+                      <TextField id="outlined-helperText" label="Write text"
+                        variant="outlined"
+                        value={this.state.value}
+                        fullWidth
+                        onChange={(e) => {
+                          this.setState({ value: e.target.value });
+                          this.value = this.state.value;
+                        }}
+                      />
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                      >
+                        Send Message
+                      </Button>
+                    </form>
+                  </div>
+                ) : (
+                  <div>
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                      <form
+                        className={classes.form}
+                        noValidate
+                        onSubmit={(value) => this.setState({ filledForm: true })}
+                      >
+                        <TextField variant="outlined" margin="normal" required fullWidth label="Room name"
+                          name="Room name"
+                          autoFocus
+                          value={this.state.room}
+                          onChange={(e) => {
+                            this.setState({ room: e.target.value });
+                            this.value = this.state.room;
+                          }}
+                        />
+                        <TextField variant="outlined" margin="normal" required fullWidth name="sender" label="sender"
+                          type="sender"
+                          id="sender"
+                          value={this.state.name}
+                          onChange={(e) => {
+                            this.setState({ name: e.target.value });
+                            this.value = this.state.name;
+                          }}
+                        />
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                        >
+                          Submit
+                        </Button>
+                      </form>
+                    </div>
+                  </div>
+                )}
             </Grid>
           ) : (
               <Grid
@@ -221,10 +227,11 @@ class App extends Component {
                 <Grid item xs={12}>
                 </Grid>
                 <Grid>
-                  <h1>Everything runs as expected!</h1>
+                  <h1>0 Alerts. Everything runs as expected!</h1>
                 </Grid>
               </Grid>
           )}
+            </Grid>
       </Container>
     );
   }
