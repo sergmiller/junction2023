@@ -17,7 +17,7 @@ scp -r build junction2023:/opt/new_build
 
 And then oN the server:
 ```bash
-rm -rf 11aibuild && mv /opt/new_build /opt/11aibuild
+rm -rf /opt/11aibuild && mv /opt/new_build /opt/11aibuild
 ```
 
 # Backend
