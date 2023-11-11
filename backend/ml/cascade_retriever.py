@@ -25,18 +25,6 @@ class CascadeRetriever:
 
     def init_models(self):
         import dsp
-        import dspy
-        lm = dspy.OpenAI(
-            model='gpt-3.5-turbo')  # can be replaced with llama or another model, see https://github.com/stanfordnlp/dspy/blob/7d578638d070818f319dc892bb662c435d1cc1bd/docs/using_local_models.md#hfmodel
-        # lm = dspy.HFClientTGI(model="meta-llama/Llama-2-7b-hf", port=8080, url="http://localhost")
-        # lm = dspy.HFModel(model = 'meta-llama/Llama-2-7b-hf')
-
-        # WIKI SOURCE
-        colbertv2_wiki17_abstracts = dspy.ColBERTv2(url='http://20.102.90.50:2017/wiki17_abstracts')
-        dspy.settings.configure(lm=lm, rm=colbertv2_wiki17_abstracts)
-
-        print("Prepare wiki source - OK")
-
         # STOCK PRICES SOURCE
         self.load_prices()
         current_day_prices = self.upload_prices_info_up_to_date(CascadeRetriever.BASE_DATE)
@@ -101,6 +89,18 @@ class CascadeRetriever:
     def process(self, message: str):
         import dsp
         import dspy
+
+        lm = dspy.OpenAI(
+            model='gpt-3.5-turbo')  # can be replaced with llama or another model, see https://github.com/stanfordnlp/dspy/blob/7d578638d070818f319dc892bb662c435d1cc1bd/docs/using_local_models.md#hfmodel
+        # lm = dspy.HFClientTGI(model="meta-llama/Llama-2-7b-hf", port=8080, url="http://localhost")
+        # lm = dspy.HFModel(model = 'meta-llama/Llama-2-7b-hf')
+
+        # WIKI SOURCE(DEFINED AT APPLICATION TIME)
+        colbertv2_wiki17_abstracts = dspy.ColBERTv2(url='http://20.102.90.50:2017/wiki17_abstracts')
+        dspy.settings.configure(lm=lm, rm=colbertv2_wiki17_abstracts)
+
+        print("Prepare wiki source - OK")
+
         passages = 5
         close_samples = [x["question"] for x in self.knn_news(dsp.Example(question=message, answer=None), passages)] \
             + [x["answer"] for x in self.knn_prices(dsp.Example(question=message, answer=None), passages)] \
