@@ -1,5 +1,8 @@
 # Django Websocket AI Assistant | Junction2023
 
+# Prototype
+http://11ai.why-nft.com/
+
 # TODO
 - [ ] Connect postgres
 
