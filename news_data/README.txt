@@ -1,1 +1,0 @@
-Reddit news dataset is from https://www.kaggle.com/datasets/aaron7sun/stocknews
