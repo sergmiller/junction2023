@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import {LineChart} from "@mui/x-charts";
 import {Grid} from "@material-ui/core";
+import {REACT_APP_BACKEND_ENDPOINT} from "./settings";
 
 const useStyles = (theme) => ({
   submit: {
@@ -28,7 +29,7 @@ class DashboardApp extends Component {
     measurementAlerts: [], // [{xData: [], yData: [], xLabel, yLabel}]
   };
 
-  clientMeasurementAlerts = new W3CWebSocket("ws://0.0.0.0:8000/ws/measurements/" + getUserId() + "/");
+  clientMeasurementAlerts = new W3CWebSocket(REACT_APP_BACKEND_ENDPOINT + "measurements/" + getUserId() + "/");
 
   onButtonClicked = (e) => {
     // TODO: to another page
@@ -57,7 +58,12 @@ class DashboardApp extends Component {
     const { classes } = this.props;
     return (
         <Container component="main" >
-          Dashboards
+          <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+              >
+          <h1>Dashboards</h1>
           <Grid container spacing={2}>
             {this.state.measurementAlerts.map((measurementAlert) => (
               <Grid item xs={6}>
@@ -79,6 +85,7 @@ class DashboardApp extends Component {
               </Grid>
             ))}
         </Grid>
+          </Grid>
       </Container>
     );
   }
