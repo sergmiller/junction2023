@@ -100,7 +100,7 @@ class App extends Component {
                 alignItems="center"
                 justifyContent="center"
               >
-                <h1>Alerts</h1>
+                <h1>Alert</h1>
               <Grid container spacing={2}>
                 {this.state.measurementAlerts.map((measurementAlert) => (
                   <Grid item xs={6}>
@@ -118,15 +118,15 @@ class App extends Component {
                         },
                       ]}
                       width={500}
-                      height={300}
+                      height={240}
                     />
                   </Grid>
                 ))}
               </Grid>
         {this.state.filledForm ? (
-          <div style={{ marginTop: 50, width: 500 }}>
+          <div style={{ marginTop: 50, width: 700 }}>
             <Paper
-              style={{height: 250, maxHeight: 250, overflow: "auto", boxShadow: "none",}}
+              style={{height: 240, maxHeight: 240, overflow: "auto", boxShadow: "none",}}
             >
               {this.state.messages.map((message) => (
                 <>
