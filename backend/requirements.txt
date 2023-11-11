@@ -1,0 +1,4 @@
+Django>=4.2.0,<4.3a
+psycopg2-binary>=2.9.5,<2.10a
+channels==4.0.0
+daphne==4.0.0
