@@ -27,7 +27,7 @@ class CascadeRetriever:
         import dsp
         # STOCK PRICES SOURCE
         self.load_prices()
-        current_day_prices = self.upload_prices_info_up_to_date(CascadeRetriever.BASE_DATE)
+        current_day_prices = self.upload_prices_info_up_to_date(CascadeRetriever.BASE_DATE, 30)
         self.prices_samples = [dsp.Example(question="ticker " + ticker, answer=make_sentence_for_ticker(ticker, current_day_prices[ticker])) for ticker
                           in tqdm.tqdm(self.tickers.keys(), position=0)]
         self.knn_prices = prepare_knn_source(dsp, self.prices_samples)
