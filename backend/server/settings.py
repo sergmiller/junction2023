@@ -25,6 +25,8 @@ SECRET_KEY = environ.get('SECRET_KEY') or 'foo1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(environ.get('DEBUG', default=0))
 
+OPENAI_TOKEN = str(environ.get('OPENAI_TOKEN', default=""))
+
 ALLOWED_HOSTS = ['*']
 
 
