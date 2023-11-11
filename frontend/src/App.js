@@ -10,6 +10,8 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Paper from "@material-ui/core/Paper";
 
 import { withStyles } from "@material-ui/core/styles";
+import {LineChart} from "@mui/x-charts";
+import {Grid} from "@material-ui/core";
 
 const useStyles = (theme) => ({
   submit: {
@@ -17,19 +19,31 @@ const useStyles = (theme) => ({
   },
 });
 
+function getUserId() {
+  return Math.random().toString()
+}
+
+function valueFormatter(value) {
+  const date = new Date(value * 1000)
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric'};
+  return new Intl.DateTimeFormat('en-US', options).format(date);
+}
+
 class App extends Component {
   state = {
-    filledForm: false,
+    filledForm: true,  // hardcoded
     messages: [],
     value: "",
-    name: "",
-    room: "test",
+    name: "me",
+    // room: "foo",  // it uses generated user id
+    measurementAlerts: [], // [{xData: [], yData: [], xLabel, yLabel}]
   };
 
-  client = new W3CWebSocket("ws://0.0.0.0:8000/ws/" + this.state.room + "/");
+  clientAi = new W3CWebSocket("ws://0.0.0.0:8000/ws/ai-chat/" + getUserId() + "/");
+  clientMeasurementAlerts = new W3CWebSocket("ws://0.0.0.0:8000/ws/measurement-alerts/" + getUserId() + "/");
 
   onButtonClicked = (e) => {
-    this.client.send(
+    this.clientAi.send(
       JSON.stringify({
         type: "message",
         text: this.state.value,
@@ -41,10 +55,14 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.client.onopen = () => {
+    this.clientAi.onopen = () => {
       console.log("WebSocket Client Connected");
     };
-    this.client.onmessage = (message) => {
+    this.clientMeasurementAlerts.onopen = () => {
+      console.log("WebSocket Measurement Client Connected");
+    };
+
+    this.clientAi.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data);
       if (dataFromServer) {
         this.setState((state) => ({
@@ -58,17 +76,54 @@ class App extends Component {
         }));
       }
     };
+
+    this.clientMeasurementAlerts.onmessage = (message) => {
+      const dataFromServer = JSON.parse(message.data);
+      if (dataFromServer) {
+        console.log("dataFromServer:", dataFromServer);
+
+        this.setState((state) => ({
+          measurementAlerts: dataFromServer,
+        }));
+      }
+    };
+
   }
 
   render() {
     const { classes } = this.props;
     return (
-      <Container component="main" maxWidth="xs">
+        <Container component="main" >
+          Alerts
+          <Grid container spacing={2}>
+            {this.state.measurementAlerts.map((measurementAlert) => (
+              <Grid item xs={6}>
+                <LineChart
+              xAxis={[{
+                data: measurementAlert.xData,
+                label: measurementAlert.xLabel,
+                valueFormatter: (v) => valueFormatter(v),
+              }]}
+              series={[
+                {
+                  data: measurementAlert.yData,
+                  label: measurementAlert.yLabel,
+                  color: "red"
+                },
+              ]}
+              width={500}
+              height={300}
+            />
+              </Grid>
+            ))}
+</Grid>
+
+
         {this.state.filledForm ? (
           <div style={{ marginTop: 50 }}>
-            Room Name: {this.state.room}
+            Chat with 11 AI
             <Paper
-              style={{height: 500, maxHeight: 500, overflow: "auto", boxShadow: "none", }}
+              style={{height: 300, maxHeight: 300, overflow: "auto", boxShadow: "none", }}
             >
               {this.state.messages.map((message) => (
                 <>

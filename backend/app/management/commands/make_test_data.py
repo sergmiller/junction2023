@@ -27,6 +27,8 @@ class Command(BaseCommand):
         info = self.stdout.write
 
         info(f'data_points: {data_points}...')
+        # TODO: flush all.
+        TimeseriesData.objects.all().delete()
 
         for m in MeasureType.choices:
             info(f'MeasureType: {m}')
