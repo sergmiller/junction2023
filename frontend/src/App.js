@@ -227,7 +227,7 @@ class App extends Component {
                 <Grid item xs={12}>
                 </Grid>
                 <Grid>
-                  <h1>Everything runs as expected!</h1>
+                  <h1>0 Alerts. Everything runs as expected!</h1>
                 </Grid>
               </Grid>
           )}
