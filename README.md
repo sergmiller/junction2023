@@ -4,6 +4,10 @@
 http://11ai.why-nft.com/
 
 # Frontend
+## Deploy Local
+`npm start` - creates a local server on http://localhost:3000
+
+
 ## Deploy
 Prepare **.env.production** according to **.env.development** and then:
 
