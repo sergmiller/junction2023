@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 
 import { withStyles } from "@material-ui/core/styles";
 import {LineChart} from "@mui/x-charts";
-import {Grid} from "@material-ui/core";
+import {Box, Grid, ImageList, ImageListItem, ImageListItemBar} from "@material-ui/core";
 
 const useStyles = (theme) => ({
   submit: {
@@ -94,41 +94,48 @@ class App extends Component {
     const { classes } = this.props;
     return (
         <Container component="main" >
-          Alerts
-          <Grid container spacing={2}>
-            {this.state.measurementAlerts.map((measurementAlert) => (
-              <Grid item xs={6}>
-                <LineChart
-              xAxis={[{
-                data: measurementAlert.xData,
-                label: measurementAlert.xLabel,
-                valueFormatter: (v) => valueFormatter(v),
-              }]}
-              series={[
-                {
-                  data: measurementAlert.yData,
-                  label: measurementAlert.yLabel,
-                  color: "red"
-                },
-              ]}
-              width={500}
-              height={300}
-            />
+          {this.state.measurementAlerts.length !== 0 ? (
+            <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+              >
+                <h1>Alerts</h1>
+              <Grid container spacing={2}>
+                {this.state.measurementAlerts.map((measurementAlert) => (
+                  <Grid item xs={6}>
+                    <LineChart
+                      xAxis={[{
+                        data: measurementAlert.xData,
+                        label: measurementAlert.xLabel,
+                        valueFormatter: (v) => valueFormatter(v),
+                      }]}
+                      series={[
+                        {
+                          data: measurementAlert.yData,
+                          label: measurementAlert.yLabel,
+                          color: "red"
+                        },
+                      ]}
+                      width={500}
+                      height={300}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-</Grid>
-
-
         {this.state.filledForm ? (
-          <div style={{ marginTop: 50 }}>
-            Chat with 11 AI
+          <div style={{ marginTop: 50, width: 500 }}>
             <Paper
-              style={{height: 300, maxHeight: 300, overflow: "auto", boxShadow: "none", }}
+              style={{height: 250, maxHeight: 250, overflow: "auto", boxShadow: "none",}}
             >
               {this.state.messages.map((message) => (
                 <>
                   <Card className={classes.root}>
-                    <CardHeader title={message.name} subheader={message.msg} />
+                    <CardHeader
+                        title={message.name}
+                        subheader={message.msg}
+                        titleTypographyProps={{variant:'p' }}
+                    />
                   </Card>
                 </>
               ))}
@@ -198,6 +205,26 @@ class App extends Component {
             </div>
           </div>
         )}
+            </Grid>
+          ) : (
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Grid>
+                  <img
+                      style={{height: 500}}
+                    src={require('./doguu.png')}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                </Grid>
+                <Grid>
+                  <h1>Everything runs as expected!</h1>
+                </Grid>
+              </Grid>
+          )}
       </Container>
     );
   }
