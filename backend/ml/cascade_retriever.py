@@ -3,10 +3,11 @@ import os
 import pandas as pd
 
 import openai
-openai.api_key_path = "/tmp/.openai"
 
-import dsp
-import dspy
+from django.conf import settings
+
+openai.api_key = settings.OPENAI_TOKEN
+
 import tqdm
 
 
@@ -14,14 +15,17 @@ import tqdm
 class CascadeRetriever:
     INSTANCE = None
 
-    DATA_DIR = ".."
+    DATA_DIR = "ml"
 
+    # here we control available information for model about world around, BASE_DATE simulate current date
     BASE_DATE = "2020-04-01"  # can be from 2018-03-18 to 2020-07-18
 
     def __init__(self):
         self.init_models()
 
     def init_models(self):
+        import dsp
+        import dspy
         lm = dspy.OpenAI(
             model='gpt-3.5-turbo')  # can be replaced with llama or another model, see https://github.com/stanfordnlp/dspy/blob/7d578638d070818f319dc892bb662c435d1cc1bd/docs/using_local_models.md#hfmodel
         # lm = dspy.HFClientTGI(model="meta-llama/Llama-2-7b-hf", port=8080, url="http://localhost")
@@ -38,7 +42,7 @@ class CascadeRetriever:
         current_day_prices = self.upload_prices_info_up_to_date(CascadeRetriever.BASE_DATE)
         self.prices_samples = [dsp.Example(question="ticker " + ticker, answer=make_sentence_for_ticker(ticker, current_day_prices[ticker])) for ticker
                           in tqdm.tqdm(self.tickers.keys(), position=0)]
-        self.knn_prices = prepare_knn_source(self.prices_samples)
+        self.knn_prices = prepare_knn_source(dsp, self.prices_samples)
 
         print("Prepare prices source - OK")
 
@@ -46,11 +50,9 @@ class CascadeRetriever:
         self.load_news()
         current_day_news = self.upload_news_up_to_date(CascadeRetriever.BASE_DATE, 25 * 60)
         self.news_samples = [dsp.Example(question=it, answer=None) for it in current_day_news]
-        self.knn_news = prepare_knn_source(self.news_samples)
+        self.knn_news = prepare_knn_source(dsp, self.news_samples)
 
         print("Prepare news source - OK")
-
-
 
 
     def load_news(self):
@@ -84,7 +86,7 @@ class CascadeRetriever:
         for t in tqdm.tqdm(os.listdir(DIR), position=0):
             if not t[-4:] == ".csv":
                 continue
-            self.tickers[t[:-4]] = pd.read_csv(DIR + t)[["Date", "Close"]]
+            self.tickers[t[:-4]] = pd.read_csv(os.path.join(DIR, t))[["Date", "Close"]]
 
     def upload_prices_info_up_to_date(self, last_date, history_len_days=7):
         prices = {}
@@ -97,10 +99,13 @@ class CascadeRetriever:
 
 
     def process(self, message: str):
+        import dsp
+        import dspy
         passages = 5
         close_samples = [x["question"] for x in self.knn_news(dsp.Example(question=message, answer=None), passages)] \
             + [x["answer"] for x in self.knn_prices(dsp.Example(question=message, answer=None), passages)] \
             + dspy.Retrieve(k=passages)(message).passages
+        print("SAMPLES: ", close_samples)
         chain = dspy.ChainOfThought("context, question -> answer")
         return chain(context=close_samples, question=message).answer
 
@@ -113,14 +118,14 @@ class CascadeRetriever:
 
 
 def make_sentence_for_ticker(ticker, history):
-    seq = "This is close prices for ticker " + ticker + " for last " + str(len(history))  +" days: "
+    seq = "This is close prices for ticker " + ticker + " for last " + str(len(history))  + " days: "
     for l in history.values:
-        date,vol = l
+        date, vol = l
         seq += date + ":" + str(round(vol, 2)) + " "
     return seq
 
 
-def prepare_knn_source(samples):
+def prepare_knn_source(dsp, samples):
     with dsp.settings.context(vectorizer=dsp.SentenceTransformersVectorizer()):
         knn_func = dsp.knn(samples)
     return knn_func
