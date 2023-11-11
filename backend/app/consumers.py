@@ -6,6 +6,8 @@ from channels.generic.websocket import WebsocketConsumer
 
 from app.models import MeasurementAlert, TimeseriesData, MeasureType
 
+from ml.handle import ask as ml_ask
+
 logger = logging.getLogger(__name__)
 
 
@@ -49,7 +51,7 @@ class AiChatRoomConsumer(RoomConsumerAbc):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': "replay on " + message,
+                'message': ml_ask(message),
                 'sender': "AI"
             }
         )

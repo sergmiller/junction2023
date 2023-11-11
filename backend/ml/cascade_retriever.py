@@ -2,10 +2,6 @@ import datetime
 import os
 import pandas as pd
 
-import matplotlib.pyplot as plt
-import matplotlib
-
-
 import openai
 openai.api_key_path = "/tmp/.openai"
 
