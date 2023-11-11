@@ -128,6 +128,7 @@ class MeasurementsRoomConsumer(RoomConsumerAbc):
                 measurement_plot = {
                     'xData': [],
                     'yData': [],
+                    'hasAlert': measurement_alert.active,
                     'xLabel': "Time",  # TODO: rehardcode.
                     'yLabel': MeasureType(measurement_alert.measurement).label,
                 }

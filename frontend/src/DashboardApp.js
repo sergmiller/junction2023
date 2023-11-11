@@ -26,7 +26,7 @@ function valueFormatter(value) {
 
 class DashboardApp extends Component {
   state = {
-    measurementAlerts: [], // [{xData: [], yData: [], xLabel, yLabel}]
+    measurementAlerts: [], // [{xData: [], yData: [], xLabel, yLabel, hasAlert}]
   };
 
   clientMeasurementAlerts = new W3CWebSocket(REACT_APP_BACKEND_ENDPOINT + "measurements/" + getUserId() + "/");
@@ -38,7 +38,7 @@ class DashboardApp extends Component {
 
   componentDidMount() {
     this.clientMeasurementAlerts.onopen = () => {
-      console.log("WebSocket Measurement Client Connected");
+      console.log("WebSocket Measurements Connected");
     };
 
     this.clientMeasurementAlerts.onmessage = (message) => {
@@ -66,23 +66,45 @@ class DashboardApp extends Component {
           <h1>Dashboards</h1>
           <Grid container spacing={2}>
             {this.state.measurementAlerts.map((measurementAlert) => (
-              <Grid item xs={6}>
+                measurementAlert.hasAlert ? (
+                    <Grid item xs={6}>
                 <LineChart
-              xAxis={[{
-                data: measurementAlert.xData,
-                label: measurementAlert.xLabel,
-                valueFormatter: (v) => valueFormatter(v),
-              }]}
-              series={[
-                {
-                  data: measurementAlert.yData,
-                  label: measurementAlert.yLabel,
-                },
-              ]}
-              width={500}
-              height={300}
-            />
+                  xAxis={[{
+                    data: measurementAlert.xData,
+                    label: measurementAlert.xLabel,
+                    valueFormatter: (v) => valueFormatter(v),
+                  }]}
+                  series={[
+                    {
+                      data: measurementAlert.yData,
+                      label: measurementAlert.yLabel,
+                      color: "red"
+                    },
+                  ]}
+                  width={500}
+                  height={300}
+                  color="red"
+                />
               </Grid>
+                ) : (
+                    <Grid item xs={6}>
+                <LineChart
+                  xAxis={[{
+                    data: measurementAlert.xData,
+                    label: measurementAlert.xLabel,
+                    valueFormatter: (v) => valueFormatter(v),
+                  }]}
+                  series={[
+                    {
+                      data: measurementAlert.yData,
+                      label: measurementAlert.yLabel,
+                    },
+                  ]}
+                  width={500}
+                  height={300}
+                />
+              </Grid>
+                    )
             ))}
         </Grid>
           </Grid>
