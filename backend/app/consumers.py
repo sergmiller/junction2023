@@ -31,6 +31,7 @@ class RoomConsumerAbc(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        self.close()
 
     def chat_message(self, event):
         # Receive message from room group
