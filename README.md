@@ -5,6 +5,8 @@ The project's key focus is aiding managers in handling complicated technical and
 
 Submitted project: https://eu.junctionplatform.com/dashboard/event/junction-2023
 
+#SkyrimTeam #Matti #SacrificeWeekend #PresentationsAllwaysWin #IWonderIfTheJunction2023WinnerHasGithubRepository #WhoHasVotedIfPlatformDidNotWorked
+
 # Abstract
 In a large production company like Outokumpu managers deal with multiple technical, economical dashboards and alerts. We enable managers to query our AI assistant, which produces an instant response to the core of the issue. Sustainably designed, and possible to scale and integrate with a large number of metrics.
 
