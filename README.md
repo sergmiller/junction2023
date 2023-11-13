@@ -5,7 +5,12 @@ The project's key focus is aiding managers in handling complicated technical and
 
 Submitted project: https://eu.junctionplatform.com/dashboard/event/junction-2023
 
-#SkyrimTeam #Matti #SacrificeWeekend #PresentationsAllwaysWin #IWonderIfTheJunction2023WinnerHasGithubRepository #WhoHasVotedIfPlatformDidNotWorked
+#SkyrimTeam 
+#Matti 
+#SacrificeWeekend 
+#PresentationsAllwaysWin 
+#IWonderIfTheJunction2023WinnerHasGithubRepository 
+#WhoHasVotedIfPlatformDidNotWorked
 
 # Abstract
 In a large production company like Outokumpu managers deal with multiple technical, economical dashboards and alerts. We enable managers to query our AI assistant, which produces an instant response to the core of the issue. Sustainably designed, and possible to scale and integrate with a large number of metrics.
@@ -22,21 +27,17 @@ In our prototype, we use a sample of data from s&p 500 stock prices, top news ar
 
 In terms of sustainability and efficiency, the solution is quite scalable to dozens of data sources and millions of data candidates. The data in the search index could be updated in a **real-time** manner since it only needs to recompute the output of a small model for a single data candidate (e.g. we got an update in Wikipedia article or value of production metric changes). Moreover, it doesn't waste a lot of input tokens of the final LLM to be able to answer the question. So it scales in constant complexity when a number of input data rises and not in a quadratic manner like a naive approach where we try to use all available information directly as an input to LLM.
 
-# Video
-Attractive video demonstration of the business issue and use case: https://youtu.be/FlCQ22mapx8
+# Video & Presentation
+- Attractive video demonstration of the business issue and use case: https://youtu.be/FlCQ22mapx8
+- Presentation: [11AIJunction2023_Final.pptx](docs/11AIJunction2023_Final.pptx)
 
 # Prototype Live
 http://11ai.why-nft.com/
 
 > We will not support the server after November, coz our credits from Cloud services by UpCloud will gone. But deploy instruction is below.
 
-# Team
-#SkyrimTeam
-
-- Ivan Cheprasov
-- Sergei Miller
-- Summer Ma
-- Irving Wang
+# Scheme
+![scheme](docs/Solution.png)
 
 # Frontend
 ## Deploy Local
@@ -79,6 +80,14 @@ docker exec -ti $(docker ps --filter expose=8000 -q) sh -c "python manage.py cre
 3. You could check http://localhost:3000/dashboards - that all graphs works (but it is not AI assistant still)
 4. Go to backend http://localhost:8000/admin (use admin/admin) and create **alert** on the measurements in **Django admin panel**: mark it as **active**, for e.g. AAPL stocks
 5. Go http://localhost:3000/ and check that graph is now in read mode, and you ask assistance in the chat directly: what happened?
+
+# Team
+#SkyrimTeam
+
+- Ivan Cheprasov
+- Sergei Miller
+- Summer Ma
+- Irving Wang
 
 # Acknowledgment
 - https://github.com/stanfordnlp/dsp/pull/12
