@@ -1,4 +1,4 @@
-# Django Websocket AI Assistant | Junction2023
+# 11AI
 The project's key focus is aiding managers in handling complicated technical and economic issues through an efficient AI assistant. Its crucial attributes include possessing real-time awareness, sustainability, scalability, and seamless integration with a wide array of data sources.
 
 > Our Junction challenge is "Sustainable generative AI assistant for insights (Outokumpu)"
