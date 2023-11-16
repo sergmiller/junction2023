@@ -34,7 +34,7 @@ In terms of sustainability and efficiency, the solution is quite scalable to doz
 # Prototype Live
 http://11ai.why-nft.com/
 
-> We will not support the server after November, coz our credits from Cloud services by UpCloud will gone. But deploy instruction is below.
+> We will not support the server after November, because our credits from Cloud services by UpCloud will gone. But the deployment instruction is presented below to whom it may concern.
 
 # Scheme
 ![scheme](docs/Solution.png)
@@ -51,7 +51,7 @@ Please prepare** .env.production** according to **.env.development** and then:
 scp -r build junction2023:/opt/new_build
 ```
 
-And then oN the server:
+And then on the server:
 ```bash
 rm -rf /opt/11aibuild && mv /opt/new_build /opt/11aibuild
 ```
@@ -64,7 +64,7 @@ cp .example.env .env
 docker-compose up --build
 ```
 
-Check 8000 port for /admin or websocket apis.
+Check 8000 port for /admin or websocket APIs.
 
 # Simulate Alerts and Ask AI Assistance [USER FLOW]
 1. Deploy frontend and backend (check for the instruction) with DEBUG env == True, thus you will create admin/admin user
@@ -77,9 +77,9 @@ docker exec -ti $(docker ps --filter expose=8000 -q) sh -c "python manage.py imp
 docker exec -ti $(docker ps --filter expose=8000 -q) sh -c "python manage.py create_disabled_alerts"
 ```
 
-3. You could check http://localhost:3000/dashboards - that all graphs works (but it is not AI assistant still)
-4. Go to backend http://localhost:8000/admin (use admin/admin) and create **alert** on the measurements in **Django admin panel**: mark it as **active**, for e.g. AAPL stocks
-5. Go http://localhost:3000/ and check that graph is now in read mode, and you ask assistance in the chat directly: what happened?
+3. You could check http://localhost:3000/dashboards - that all graphs work and in green mode, as it is in the assistant page: http://localhost:3000/
+4. Go to backend admin panel: http://localhost:8000/admin (use admin/admin if you started with default deploy mode) and create **alert** on the measurement model in **Django admin panel**. To create alert: mark model object as **active**, for e.g. AAPL stocks as in the [http://11ai.why-nft.com/](http://11ai.why-nft.com/). Press **save**.
+5. Go http://localhost:3000/ and check that the graph is now in red color mode, and you can ask our assistant in the chat directly: what happened? The assistant will use the indexed data of the instrument and produce the answer based on this **insight** data and your question.
 
 # Team
 #SkyrimTeam
